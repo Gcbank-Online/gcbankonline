@@ -166,6 +166,12 @@
         <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
       </div>
       
+      <div id="success-message" style="display: none; padding: 20px; background-color: #e6ffed; border: 1px solid #c8e6c9; border-radius: 8px; margin-top: 20px;">
+    <h3>Sign In Successful!</h3>
+    <p>Welcome back, <span id="welcome-email"></span>. You have successfully accessed GC Demo Bank.</p>
+    <button onclick="window.location.reload();" style="padding: 10px 20px; border: none; background-color: #28a745; color: white; border-radius: 5px; cursor: pointer;">Go to Dashboard</button>
+      </div>
+      
       <button type="submit" aria-label="Sign In to your account">Sign In</button>
     </form>
     <p class="signup-text">
