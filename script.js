@@ -1,39 +1,51 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Get the form element.
+    // Elements we need to manipulate
     const form = document.querySelector('form');
-    
-    // 2. Add an event listener for the 'submit' event on the form.
+    const container = document.querySelector('.container');
+    const successMessageDiv = document.getElementById('success-message');
+    const welcomeEmailSpan = document.getElementById('welcome-email');
+
+    // Listen for the form submission
     form.addEventListener('submit', function(event) {
-        // Prevent the default form submission (which reloads the page).
         event.preventDefault(); 
 
-        // 3. Get the values from the input fields using their IDs.
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-
-        // 4. Simple client-side validation logic.
+        // Simple validation
         if (email === "" || password === "") {
-            alert("Please enter both your email address and password to sign in.");
-            return; // Stop execution if fields are empty
+            alert("Please enter both email and password.");
+            return; 
         }
 
-        // 5. Success/Action Feedback (since there is no server for now).
-        // In a real app, you would use 'fetch()' or 'XMLHttpRequest' here 
-        // to send the data to a backend server.
-        const confirmationMessage = `Sign In Attempt:\nEmail: ${email}\nPassword: ${'*'.repeat(password.length)}\n\nThis is a client-side simulation. If this were a real application, your credentials would now be sent securely to the GC Bank server for verification.`;
-        
-        alert(confirmationMessage);
-        
-        // Optional: Clear the password field after alert (good practice)
-        passwordInput.value = '';
+        // --- SUCCESS ACTION ---
+
+        // 1. Update the welcome message with the user's email
+        welcomeEmailSpan.textContent = email;
+
+        // 2. Hide the main container content (form, logo, signup text)
+        // We use the container for this specific HTML structure
+        form.style.display = 'none'; // Hide the form
+        document.querySelector('.logo').style.display = 'none'; // Hide the logo
+        document.querySelector('.signup-text').style.display = 'none'; // Hide the signup prompt
+
+        // 3. Display the success message
+        successMessageDiv.style.display = 'block';
+
+        // Optional: Hide the password for security after 'submission'
+        document.getElementById('password').value = '';
     });
-    
-    // Optional: Add a listener for the 'Forgot Password?' link (prevent navigation)
-    const forgotPasswordLink = document.querySelector('.forgot-password');
-    if (forgotPasswordLink) {
+
+    // Prevent navigation for the static links
+    const staticLinks = document.querySelectorAll('.forgot-password, .sign-up-link');
+    staticLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            // You can add different alerts for each link here if needed
+            alert(`The link to '${link.textContent.trim()}' is not yet implemented.`);
+        });
+    });
+});
         forgotPasswordLink.addEventListener('click', function(event) {
             event.preventDefault();
             alert("Forgot Password feature not yet implemented. Please contact support.");
