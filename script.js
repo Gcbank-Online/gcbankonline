@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', function(event) {
         event.preventDefault(); 
-        let isValid = true; // Flag to track overall form validity
+        let isValid = true; 
 
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
@@ -59,9 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- SUCCESS ACTION (If isValid is true) ---
+        // --- SUCCESS ACTION ---
 
-        // 1. Update the welcome message with the user's email
+        // 1. Update the welcome message
         welcomeEmailSpan.textContent = email;
 
         // 2. Hide the main login components
@@ -72,11 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // 3. Display the success message
         successMessageDiv.style.display = 'block';
 
-        // Optional: Hide the password for security after 'submission'
         passwordInput.value = '';
     });
 
     // Prevent navigation for the static links
+    const staticLinks = document.querySelectorAll('.forgot-password, .sign-up-link');
+    staticLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            // We leave a simple alert for these non-implemented features
+            alert(`The link to '${link.textContent.trim()}' is not yet implemented.`);
+        });
+    });
+});
     const staticLinks = document.querySelectorAll('.forgot-password, .sign-up-link');
     staticLinks.forEach(link => {
         link.addEventListener('click', function(event) {
