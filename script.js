@@ -1,39 +1,90 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Elements we need to manipulate
     const form = document.querySelector('form');
-    const container = document.querySelector('.container');
     const successMessageDiv = document.getElementById('success-message');
     const welcomeEmailSpan = document.getElementById('welcome-email');
 
-    // Listen for the form submission
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    // New elements for error display
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+
+    // Function to display errors
+    function displayError(element, message) {
+        element.textContent = message;
+        element.style.display = 'block';
+    }
+
+    // Function to clear errors
+    function clearError(element) {
+        element.textContent = '';
+        element.style.display = 'none';
+    }
+
+    // Simple email regex for client-side check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     form.addEventListener('submit', function(event) {
         event.preventDefault(); 
+        let isValid = true; // Flag to track overall form validity
 
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
 
-        // Simple validation
-        if (email === "" || password === "") {
-            alert("Please enter both email and password.");
-            return; 
+        // Reset errors
+        clearError(emailError);
+        clearError(passwordError);
+
+        // 1. Email Validation
+        if (email === "") {
+            displayError(emailError, "Email address is required.");
+            isValid = false;
+        } else if (!emailRegex.test(email)) {
+            displayError(emailError, "Please enter a valid email address.");
+            isValid = false;
         }
 
-        // --- SUCCESS ACTION ---
+        // 2. Password Validation
+        if (password === "") {
+            displayError(passwordError, "Password is required.");
+            isValid = false;
+        } else if (password.length < 8) {
+            displayError(passwordError, "Password must be at least 8 characters.");
+            isValid = false;
+        }
+
+        // If the form is not valid, stop here.
+        if (!isValid) {
+            return;
+        }
+
+        // --- SUCCESS ACTION (If isValid is true) ---
 
         // 1. Update the welcome message with the user's email
         welcomeEmailSpan.textContent = email;
 
-        // 2. Hide the main container content (form, logo, signup text)
-        // We use the container for this specific HTML structure
-        form.style.display = 'none'; // Hide the form
-        document.querySelector('.logo').style.display = 'none'; // Hide the logo
-        document.querySelector('.signup-text').style.display = 'none'; // Hide the signup prompt
+        // 2. Hide the main login components
+        document.querySelector('.logo').style.display = 'none'; 
+        form.style.display = 'none';
+        document.querySelector('.signup-text').style.display = 'none';
 
         // 3. Display the success message
         successMessageDiv.style.display = 'block';
 
         // Optional: Hide the password for security after 'submission'
-        document.getElementById('password').value = '';
+        passwordInput.value = '';
+    });
+
+    // Prevent navigation for the static links
+    const staticLinks = document.querySelectorAll('.forgot-password, .sign-up-link');
+    staticLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            alert(`The link to '${link.textContent.trim()}' is not yet implemented.`);
+        });
+    });
+});
     });
 
     // Prevent navigation for the static links
