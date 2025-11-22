@@ -3,52 +3,363 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GC Demo Bank Sign In</title>
-  <link rel="stylesheet" href="styles.css"> 
+  <title>Gc Bank Plc - Home</title>
+  <meta name="description" content="Gc Bank Plc - Secure and convenient online banking services." />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #f4f6f8;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header styling */
+    header {
+      background: linear-gradient(90deg, #004080 0%, #007acc 100%);
+      color: white;
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    header .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    header .logo-container img {
+      height: 40px;
+      width: auto;
+      user-select: none;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      user-select: none;
+    }
+
+    /* Navigation menu */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-grow: 1;
+      justify-content: center;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      background-color: rgba(255, 255, 255, 0.2);
+      outline: none;
+    }
+
+    nav a[aria-current="page"] {
+      background-color: rgba(255, 255, 255, 0.3);
+      cursor: default;
+    }
+
+    /* Login / Signup button */
+    .btn-login-signup {
+      background-color: #005fa3;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      text-decoration: none;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .btn-login-signup:hover,
+    .btn-login-signup:focus {
+      background-color: #003f6b;
+      outline: none;
+    }
+
+    /* Responsive hamburger menu */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+      background: none;
+      border: none;
+      padding: 0;
+      margin-left: 1rem;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+    }
+
+    /* Main content */
+    main {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+      background: white;
+      padding: 1.5rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+    }
+
+    h2 {
+      color: #004080;
+      border-bottom: 3px solid #007acc;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+
+    /* Flex container for image + text */
+    .content-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .content-flex img {
+      max-width: 300px;
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      flex-shrink: 0;
+    }
+
+    .content-text {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    /* Buttons */
+    .btn-get-started {
+      display: inline-block;
+      background-color: #007acc;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      text-decoration: none;
+      margin-top: 1rem;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    .btn-get-started:hover,
+    .btn-get-started:focus {
+      background-color: #005fa3;
+      outline: none;
+    }
+
+    /* Footer styling */
+    footer {
+      background-color: #222;
+      color: #ccc;
+      text-align: center;
+      padding: 1rem 0;
+      margin-top: 3rem;
+      user-select: none;
+    }
+
+    footer nav ul {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0;
+      margin: 0 0 0.5rem 0;
+      list-style: none;
+    }
+
+    footer nav a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    footer nav a:hover,
+    footer nav a:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      nav ul {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #004080;
+        flex-direction: column;
+        width: 200px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 1000;
+      }
+
+      nav ul.open {
+        max-height: 500px; /* enough height to show all links */
+      }
+
+      nav ul li {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+      }
+
+      nav ul li:last-child {
+        border-bottom: none;
+      }
+
+      nav a {
+        padding: 0;
+        font-size: 1.1rem;
+        display: block;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      /* Content flex stack on mobile */
+      .content-flex {
+        flex-direction: column;
+      }
+
+      .content-flex img {
+        max-width: 100%;
+      }
+
+      /* Adjust header layout on mobile */
+      header {
+        justify-content: space-between;
+      }
+
+      nav {
+        justify-content: flex-end;
+        flex-grow: 0;
+        order: 3;
+        width: 100%;
+      }
+
+      .btn-login-signup {
+        order: 2;
+        margin-left: auto;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container" role="main">
-    <div class="logo" aria-label="GC Demo Bank logo">
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" >
-        <circle cx="12" cy="12" r="10" fill="#2c64b8"/>
-        <path d="M10 8l4 4-4 4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M14 12H8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span>GC Demo Bank</span>
+  <header>
+    <div class="logo-container">
+      <a href="index.html">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Bank_icon.svg/120px-Bank_icon.svg.png" alt="Gc Bank Plc Logo" />
+      </a>
+      <h1>Gc Bank Plc</h1>
     </div>
-    
-    <form action="#" method="post" aria-labelledby="signin-title">
-      <h2 id="signin-title">Welcome Back!</h2>
-      <p class="description">Sign in to continue to your account.</p>
-      
-      <div class="input-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
-        <span id="email-error" class="error-message"></span>
-      </div>
-      
-      <div class="input-group">
-        <label for="password">Password</label>
-        <a href="#" class="forgot-password">Forgot Password?</a>
-        <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
-        <span id="password-error" class="error-message"></span>
-      </div>
-      
-      <button type="submit" aria-label="Sign In to your account">Sign In</button>
-    </form>
-    
-    <p class="signup-text">
-      Don't have an account?
-      <a href="#" class="sign-up-link">Sign Up</a>
-    </p>
 
-    <div id="success-message" style="display: none;">
-        <h3>Sign In Successful!</h3>
-        <p>Welcome back, <span id="welcome-email"></span>. You have successfully accessed GC Demo Bank.</p>
-        <button onclick="window.location.reload();">Go to Dashboard</button>
-    </div>
-  </div>
-  
-  <script src="script.js"></script> 
+    <nav aria-label="Primary Navigation">
+      <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul id="primary-menu">
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="signup-login.html">Signup/Login</a></li>
+        <li><a href="investment.html">Investment</a></li>
+        <li><a href="loan.html">Loan</a></li>
+        <li><a href="credit-card.html">Credit Card</a></li>
+        <li><a href="contact-us.html">Contact Us</a></li>
+        <li><a href="help.html">Help</a></li>
+        <li><a href="about-us.html">About Us</a></li>
+        <li><a href="testimonials.html">Testimonials</a></li>
+      </ul>
+    </nav>
+
+    <a href="signup-login.html" class="btn-login-signup">Login / Sign Up</a>
+  </header>
+
+  <main>
+    <section aria-label="Home section">
+      <h2>Welcome to Gc Bank Plc</h2>
+      <div class="content-flex">
+        <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80" alt="Bank building exterior" />
+        <div class="content-text">
+          <p>Gc Bank Plc is your trusted partner for secure, convenient online banking. Manage your finances effortlessly with our innovative digital solutions designed for individuals and businesses alike.</p>
+          <a href="signup-login.html" class="btn-get-started">Get Started</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <nav aria-label="Footer Sitemap">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="signup-login.html">Signup/Login</a></li>
+        <li><a href="investment.html">Investment</a></li>
+        <li><a href="loan.html">Loan</a></li>
+        <li><a href="credit-card.html">Credit Card</a></li>
+        <li><a href="contact-us.html">Contact Us</a></li>
+        <li><a href="help.html">Help</a></li>
+        <li><a href="about-us.html">About Us</a></li>
+        <li><a href="testimonials.html">Testimonials</a></li>
+      </ul>
+    </nav>
+    <p>&copy; 2024 Gc Bank Plc. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const menuToggle = document.querySelector('.menu-toggle');
+      const menu = document.getElementById('primary-menu');
+
+      menuToggle.addEventListener('click', function () {
+        const isOpen = menu.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', isOpen);
+      });
+    });
+  </script>
 </body>
 </html>
