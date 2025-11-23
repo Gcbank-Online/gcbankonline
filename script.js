@@ -1,122 +1,119 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
-    const successMessageDiv = document.getElementById('success-message');
-    const welcomeEmailSpan = document.getElementById('welcome-email');
+// Hamburger menu toggle
+const menuToggle = document.querySelector('.menu-toggle');
+const nav = document.getElementById('primary-navigation');
 
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-
-    // New elements for error display
-    const emailError = document.getElementById('email-error');
-    const passwordError = document.getElementById('password-error');
-
-    // Function to display errors
-    function displayError(element, message) {
-        element.textContent = message;
-        element.style.display = 'block';
-    }
-
-    // Function to clear errors
-    function clearError(element) {
-        element.textContent = '';
-        element.style.display = 'none';
-    }
-
-    // Simple email regex for client-side check
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); 
-        let isValid = true; 
-
-        const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-
-        // Reset errors
-        clearError(emailError);
-        clearError(passwordError);
-
-        // 1. Email Validation
-        if (email === "") {
-            displayError(emailError, "Email address is required.");
-            isValid = false;
-        } else if (!emailRegex.test(email)) {
-            displayError(emailError, "Please enter a valid email address.");
-            isValid = false;
-        }
-
-        // 2. Password Validation
-        if (password === "") {
-            displayError(passwordError, "Password is required.");
-            isValid = false;
-        } else if (password.length < 8) {
-            displayError(passwordError, "Password must be at least 8 characters.");
-            isValid = false;
-        }
-
-        // If the form is not valid, stop here.
-        if (!isValid) {
-            return;
-        }
-
-        // --- SUCCESS ACTION ---
-
-        // 1. Update the welcome message
-        welcomeEmailSpan.textContent = email;
-
-        // 2. Hide the main login components
-        document.querySelector('.logo').style.display = 'none'; 
-        form.style.display = 'none';
-        document.querySelector('.signup-text').style.display = 'none';
-
-        // 3. Display the success message
-        successMessageDiv.style.display = 'block';
-
-        passwordInput.value = '';
-    });
-
-    // Prevent navigation for the static links
-    const staticLinks = document.querySelectorAll('.forgot-password, .sign-up-link');
-    staticLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            // We leave a simple alert for these non-implemented features
-            alert(`The link to '${link.textContent.trim()}' is not yet implemented.`);
-        });
-    });
+menuToggle.addEventListener('click', () => {
+  const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+  menuToggle.setAttribute('aria-expanded', String(!isExpanded));
+  nav.classList.toggle('active');
 });
-    const staticLinks = document.querySelectorAll('.forgot-password, .sign-up-link');
-    staticLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            alert(`The link to '${link.textContent.trim()}' is not yet implemented.`);
-        });
-    });
-});
-    });
 
-    // Prevent navigation for the static links
-    const staticLinks = document.querySelectorAll('.forgot-password, .sign-up-link');
-    staticLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            // You can add different alerts for each link here if needed
-            alert(`The link to '${link.textContent.trim()}' is not yet implemented.`);
-        });
-    });
-});
-        forgotPasswordLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            alert("Forgot Password feature not yet implemented. Please contact support.");
-        });
-    }
+// Contact form validation
+const form = document.getElementById('contact-form');
 
-    // Optional: Add a listener for the 'Sign Up' link (prevent navigation)
-    const signUpLink = document.querySelector('.sign-up-link');
-    if (signUpLink) {
-        signUpLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            alert("Sign Up page not yet implemented. Redirecting to signup...");
-        });
+form.addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent default form submission
+
+  // Clear previous errors
+  const errorMessages = form.querySelectorAll('.error-message');
+  errorMessages.forEach(msg => {
+    msg.textContent = '';
+    msg.classList.remove('visible');
+  });
+
+  const inputs = form.querySelectorAll('input, textarea');
+  let isFormValid = true;
+
+  inputs.forEach(input => {
+    input.classList.remove('error');
+
+    if (!input.checkValidity()) {
+      isFormValid = false;
+      const errorMsg = input.nextElementSibling;
+      input.classList.add('error');
+
+      if (input.validity.valueMissing) {
+        errorMsg.textContent = 'This field is required.';
+      } else if (input.validity.typeMismatch) {
+        errorMsg.textContent = 'Please enter a valid value.';
+      } else {
+        errorMsg.textContent = 'Invalid input.';
+      }
+      errorMsg.classList.add('visible');
     }
+  });
+
+  if (isFormValid) {
+    alert('Thank you for contacting Gc Bank Plc! We will get back to you shortly.');
+    form.reset();
+  }
 });
+
+// Modal dialog functionality
+const modal = document.getElementById('announcement-modal');
+const openModalBtn = document.getElementById('open-modal-btn');
+const closeModalBtn = modal.querySelector('.modal-close');
+
+function openModal() {
+  modal.setAttribute('aria-hidden', 'false');
+  modal.focus();
+  document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+function closeModal() {
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  openModalBtn.focus(); // Return focus to button
+}
+
+openModalBtn.addEventListener('click', openModal);
+closeModalBtn.addEventListener('click', closeModal);
+
+// Close modal on Escape key press
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+    closeModal();
+  }
+});
+
+// Trap focus inside modal when open (basic)
+modal.addEventListener('keydown', (e) => {
+  if (e.key === 'Tab') {
+    const focusableElements = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const first = focusableElements[0];
+    const last = focusableElements[focusableElements.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+});
+
+// Tabs functionality
+const tabs = document.querySelectorAll('.tabs [role="tab"]');
+const tabPanels = document.querySelectorAll('[role="tabpanel"]');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    activateTab(tab);
+  });
+
+  tab.addEventListener('keydown', (e) => {
+    let index = Array.prototype.indexOf.call(tabs, e.currentTarget);
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextIndex = (index + 1) % tabs.length;
+      tabs[nextIndex].focus();
+      activateTab(tabs[nextIndex]);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevIndex = (index - 1 + tabs.length) % tabs.length;
+      tabs[prevIndex].
